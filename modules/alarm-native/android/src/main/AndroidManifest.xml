@@ -1,0 +1,39 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <!--
+    Uncomment these when the corresponding .kt file actually does something.
+    If you register a receiver that does not exist, the app can crash at fire time.
+    If you register an empty BootReceiver, it will still run on every reboot
+    (harmless but pointless).
+
+    Merged with the app manifest at prebuild / Gradle compile.
+
+    <application>
+      <receiver
+        android:name=".AlarmReceiver"
+        android:exported="false" />
+
+      <receiver
+        android:name=".BootReceiver"
+        android:exported="true"
+        android:enabled="true">
+        <intent-filter>
+          <action android:name="android.intent.action.BOOT_COMPLETED" />
+        </intent-filter>
+      </receiver>
+
+      <activity
+        android:name=".AlarmRingingActivity"
+        android:exported="false"
+        android:showWhenLocked="true"
+        android:turnScreenOn="true"
+        android:excludeFromRecents="true"
+        android:taskAffinity=""
+        android:launchMode="singleInstance" />
+
+      <service
+        android:name=".AlarmSoundService"
+        android:exported="false"
+        android:foregroundServiceType="mediaPlayback" />
+    </application>
+  -->
+</manifest>
