@@ -33,15 +33,10 @@
  * Backup/export is a later feature (you would copy this file or dump SQL).
  */
 
-import { notImplemented } from '../utils/notImplemented';
-
-// TODO: import * as SQLite from 'expo-sqlite';
-// TODO: pick a type from expo-sqlite, e.g. SQLite.SQLiteDatabase
-
+import { getMigration001Statements } from './schema';
 import * as SQLite from 'expo-sqlite';
-const db = await SQLite.openDatabaseAsync('reminders.db');
 
-export type Database = unknown;
+export type Database = SQLite.SQLiteDatabase;
 
 let dbPromise: Promise<Database> | null = null;
 
@@ -58,8 +53,6 @@ let dbPromise: Promise<Database> | null = null;
  * 6. Cache and return the db
  */
 
-
-
 export function getDb(): Promise<Database> {
   if (!dbPromise) {
     dbPromise = openAndMigrate();
@@ -68,7 +61,19 @@ export function getDb(): Promise<Database> {
 }
 
 async function openAndMigrate(): Promise<Database> {
-  return notImplemented('db/client.ts openAndMigrate — open SQLite and run schema.ts migrations');
+  const db = await SQLite.openDatabaseAsync('reminders.db');
+  await db.execAsync('PRAGMA foreign_keys = ON;')
+  const result = await db.getFirstAsync<{ user_version:number }>('PRAGMA user_version');
+  const currentDbVersion = result?.user_version ?? 0;
+  if (currentDbVersion < 1) {
+    await db.withTransactionAsync(async () => {
+      for (const sql of getMigration001Statements()) {
+        await db.execAsync(sql);
+      }
+    await db.execAsync('PRAGMA user_version = 1');
+    });
+  }
+  return db;
 }
 
 /**

@@ -61,7 +61,7 @@ export function getMigration001Statements(): string[] {
     minute INTEGER NOT NULL,
     enabled INTEGER NOT NULL DEFAULT 1,
     vibrate INTEGER NOT NULL DEFAULT 1,
-    snooze_minutes INTEGER NOT NULL DEFAULT 10,
+    snooze_minutes INTEGER NOT NULL DEFAULT 10
   );
   CREATE INDEX IF NOT EXISTS idx_templates_routine ON alarm_templates(routine_id);
   CREATE TABLE IF NOT EXISTS schedules (
@@ -71,7 +71,7 @@ export function getMigration001Statements(): string[] {
     start_date TEXT NOT NULL,
     end_date TEXT,
     days_of_week TEXT NOT NULL,
-    enabled INTEGER NOT NULL DEFAULT 1,
+    enabled INTEGER NOT NULL DEFAULT 1
   );
   CREATE TABLE IF NOT EXISTS schedule_exceptions (
     id TEXT PRIMARY KEY NOT NULL,
