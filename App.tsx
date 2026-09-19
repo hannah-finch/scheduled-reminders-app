@@ -20,12 +20,16 @@
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { RootNavigator } from './src/navigation/RootNavigator';
+import { useEffect } from 'react';
+import { getDb } from './src/db/client';
 
 export default function App() {
   // TODO: useEffect(() => { void bootstrap(); }, []);
-  // async function bootstrap() {
-  //   await getDb();
-  // }
+
+  useEffect(() => { void bootstrap(); }, []);
+  async function bootstrap() {
+    await getDb();
+  }
   return (
     <SafeAreaProvider>
       <RootNavigator />

@@ -1,5 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text } from 'react-native';
+import { getDb } from '../db/client';
 
 import { LearningNote } from '../components/LearningNote';
 import type { RoutinesStackParamList } from '../navigation/types';
@@ -35,6 +36,41 @@ export function RoutinesScreen({ navigation }: Props) {
       >
         <Text style={styles.buttonLabel}>Open editor stub (create)</Text>
       </Pressable>
+
+      <Pressable
+  style={styles.button}
+  onPress={async () => {
+    try {
+      const db = await getDb();
+      const versionRow = await db.getFirstAsync<{ user_version: number }>(
+        'PRAGMA user_version'
+      );
+      const tables = await db.getAllAsync<{ name: string }>(
+        `SELECT name FROM sqlite_master
+         WHERE type = 'table' AND name NOT LIKE 'sqlite_%'
+         ORDER BY name`
+      );
+      const settings = await db.getFirstAsync<{ id: number; horizon_days: number }>(
+        'SELECT id, horizon_days FROM settings WHERE id = 1'
+      );
+      const names = tables.map((t) => t.name).join(', ');
+      const message =
+        `user_version=${versionRow?.user_version}\n` +
+        `tables: ${names}\n` +
+        `settings.horizon_days=${settings?.horizon_days}`;
+      console.log(message);
+      Alert.alert('DB ok', message);
+    } catch (err) {
+      console.error(err);
+      Alert.alert('DB failed', String(err));
+    }
+  }}
+>
+  <Text style={styles.buttonLabel}>Test SQLite</Text>
+</Pressable>
+
+
+
     </ScrollView>
   );
 }
