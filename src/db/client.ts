@@ -33,8 +33,8 @@
  * Backup/export is a later feature (you would copy this file or dump SQL).
  */
 
-import { getMigration001Statements } from './schema';
-import * as SQLite from 'expo-sqlite';
+import { getMigration001Statements } from "./schema";
+import * as SQLite from "expo-sqlite";
 
 export type Database = SQLite.SQLiteDatabase;
 
@@ -61,16 +61,18 @@ export function getDb(): Promise<Database> {
 }
 
 async function openAndMigrate(): Promise<Database> {
-  const db = await SQLite.openDatabaseAsync('reminders.db');
-  await db.execAsync('PRAGMA foreign_keys = ON;')
-  const result = await db.getFirstAsync<{ user_version:number }>('PRAGMA user_version');
+  const db = await SQLite.openDatabaseAsync("reminders.db");
+  await db.execAsync("PRAGMA foreign_keys = ON;");
+  const result = await db.getFirstAsync<{ user_version: number }>(
+    "PRAGMA user_version",
+  );
   const currentDbVersion = result?.user_version ?? 0;
   if (currentDbVersion < 1) {
     await db.withTransactionAsync(async () => {
       for (const sql of getMigration001Statements()) {
         await db.execAsync(sql);
       }
-    await db.execAsync('PRAGMA user_version = 1');
+      await db.execAsync("PRAGMA user_version = 1");
     });
   }
   return db;
