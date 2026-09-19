@@ -1,0 +1,43 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.scheduledreminders.alarmnative" >
+4    <!--
+5    Uncomment these when the corresponding .kt file actually does something.
+6    If you register a receiver that does not exist, the app can crash at fire time.
+7    If you register an empty BootReceiver, it will still run on every reboot
+8    (harmless but pointless).
+9
+10    Merged with the app manifest at prebuild / Gradle compile.
+11
+12    <application>
+13      <receiver
+14        android:name=".AlarmReceiver"
+15        android:exported="false" />
+16
+17      <receiver
+18        android:name=".BootReceiver"
+19        android:exported="true"
+20        android:enabled="true">
+21        <intent-filter>
+22          <action android:name="android.intent.action.BOOT_COMPLETED" />
+23        </intent-filter>
+24      </receiver>
+25
+26      <activity
+27        android:name=".AlarmRingingActivity"
+28        android:exported="false"
+29        android:showWhenLocked="true"
+30        android:turnScreenOn="true"
+31        android:excludeFromRecents="true"
+32        android:taskAffinity=""
+33        android:launchMode="singleInstance" />
+34
+35      <service
+36        android:name=".AlarmSoundService"
+37        android:exported="false"
+38        android:foregroundServiceType="mediaPlayback" />
+39    </application>
+40    -->
+41    <uses-sdk android:minSdkVersion="24" />
+42
+43</manifest>

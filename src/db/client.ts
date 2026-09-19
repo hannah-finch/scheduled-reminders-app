@@ -37,6 +37,10 @@ import { notImplemented } from '../utils/notImplemented';
 
 // TODO: import * as SQLite from 'expo-sqlite';
 // TODO: pick a type from expo-sqlite, e.g. SQLite.SQLiteDatabase
+
+import * as SQLite from 'expo-sqlite';
+const db = await SQLite.openDatabaseAsync('reminders.db');
+
 export type Database = unknown;
 
 let dbPromise: Promise<Database> | null = null;
@@ -53,6 +57,9 @@ let dbPromise: Promise<Database> | null = null;
  *    then PRAGMA user_version = 1
  * 6. Cache and return the db
  */
+
+
+
 export function getDb(): Promise<Database> {
   if (!dbPromise) {
     dbPromise = openAndMigrate();
